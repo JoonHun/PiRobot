@@ -8,6 +8,7 @@ print("\n")
 
 # 앞/뒤 문자열 공백 제거
 b = "   안녕하세요?   "
+
 print("Original : " + b)
 print("strip()  : " + b.strip())
 print("\n")
@@ -31,6 +32,7 @@ print("저녁 in  : " + str("저녁" in d))
 
 # 자르기
 e = "10 20 30 40 50"
+
 out_e = e.split(" ")
 print("Original : " + e)
 print("split()  : " + str(out_e))

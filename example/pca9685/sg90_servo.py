@@ -4,15 +4,27 @@ import time
 # PCA9685모듈을 임포트.
 import Adafruit_PCA9685
 
+
 pwm = Adafruit_PCA9685.PCA9685() #pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
 
-# min 80, mid 320, max 560
-servo_min = 80  # -90
-servo_mid = 300  # 0
-servo_max = 520  # 90
+# experimental value min 80, mid 320, max 560
+# 50 hz => 20ms
+# 20 ms / 4096 (12bit resolution) = 4.88 us
+# just calcurated value
+#  90 : 1 ms   => 1000 / 4.88 = 205   
+#   0 : 1.5 ms => 1500 / 4.88 = 308   
+# -90 : 2 ms   => 2000 / 4.88 = 410   
+# experimental value 
+#  90 : 120
+#   0 : 340
+# -90 : 560
+
+SERVO = [0,15]
+SERVO_VAL = [340, 120, 340, 560]
 
 pwm.set_pwm_freq(50)
 
+"""
 # 서보 펄스폭을 더 간단하게 만들어주는 함수.
 def set_servo_pulse(channel, pulse):
     pulse_length = 1000000    # 1,000,000 us per second
@@ -24,27 +36,12 @@ def set_servo_pulse(channel, pulse):
     pulse //= pulse_length
     print('{0} pulse'.format(pulse))
     pwm.set_pwm(channel, 0, pulse)
-
+"""
 while True:
-#    pwm.set_pwm(15, 0, servo_mid)
-#    print(servo_mid)
-#    time.sleep(1) # 1초정지.
-
-#    for value in range(80, 70, -1):
-#        pwm.set_pwm(15, 0, value)
-#        print(value)
-#        time.sleep(1) # 1초정지.
-
-    pwm.set_pwm(0, 0, servo_mid)
-    print(servo_mid)
-    time.sleep(1) # 1초정지.
-    pwm.set_pwm(0, 0, servo_min)
-    print(servo_min)
-    time.sleep(1) # 1초정지.
-    pwm.set_pwm(0, 0, servo_mid)
-    print(servo_mid)
-    time.sleep(1) # 1초정지.
-    pwm.set_pwm(0, 0, servo_max)
-    print(servo_max)
-    time.sleep(1) # 1초정지.
+    for val in SERVO_VAL:
+        for servo in SERVO:
+            pwm.set_pwm(servo, 0, val)
+            print("servo %2d = %d"%(servo, val))
+        time.sleep(0.5)
+    
 

@@ -19,7 +19,6 @@ pwm = Adafruit_PCA9685.PCA9685() #pwm = Adafruit_PCA9685.PCA9685(address=0x41, b
 #   0 : 340
 # -90 : 560
 
-SERVO = [0,15]
 SERVO_VAL = [340, 120, 340, 560]
 
 pwm.set_pwm_freq(50)
@@ -37,11 +36,37 @@ def set_servo_pulse(channel, pulse):
     print('{0} pulse'.format(pulse))
     pwm.set_pwm(channel, 0, pulse)
 """
+
+while True:
+    servo_num = input("select servo 0 , 14, 15 : ")
+    SERVO = int(servo_num, 10)
+    print("select servo {:2d}".format(SERVO))
+    Val = 340
+    pwm.set_pwm(SERVO, 0, Val)
+    flag = True
+
+    while flag:
+        di = input("select directorion 1(left) , 3(right) , 0(exit) : ")
+        print("select key {}".format(di))
+        
+        if(di == "0" ):
+            flag = False
+        elif(di == "1"):
+            Val += 20 
+        else:
+            Val -= 20
+
+        pwm.set_pwm(SERVO, 0, Val)
+        print("servo %2d = %d"%(SERVO, Val))
+
+
+
+"""
 while True:
     for val in SERVO_VAL:
         for servo in SERVO:
             pwm.set_pwm(servo, 0, val)
             print("servo %2d = %d"%(servo, val))
-        time.sleep(0.5)
+        time.sleep(3)
     
-
+"""
